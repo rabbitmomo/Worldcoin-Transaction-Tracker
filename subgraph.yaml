@@ -1,0 +1,44 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: WLD
+    network: mainnet
+    source:
+      address: "0x163f8C2467924be0ae7B5347228CABF260318753"
+      abi: WLD
+      startBlock: 20783512
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - InflationTokensMinted
+        - OwnershipTransferStarted
+        - OwnershipTransferred
+        - TokenUpdated
+        - TokensMinted
+        - Transfer
+      abis:
+        - name: WLD
+          file: ./abis/WLD.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: InflationTokensMinted(address,address,uint256)
+          handler: handleInflationTokensMinted
+        - event: OwnershipTransferStarted(indexed address,indexed address)
+          handler: handleOwnershipTransferStarted
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: TokenUpdated(address,string,string,address[],uint256[],uint256,uint256,uint256)
+          handler: handleTokenUpdated
+        - event: TokensMinted(address,address[],uint256[])
+          handler: handleTokensMinted
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/wld.ts
